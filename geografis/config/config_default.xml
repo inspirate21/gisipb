@@ -1,0 +1,210 @@
+<pmapper>
+    <ini>
+        <pmapper>
+            <pmTitle>Sistem Informasi Geografis Pencarian Ruang Kuliah</pmTitle>
+            <debugLevel>3</debugLevel>
+            <plugins>export</plugins>
+            <plugins>scalebar</plugins> <!-- bawah kiri -->
+            <plugins>transparency</plugins>
+			
+        </pmapper>
+        <config>
+            <pm_config_location>default</pm_config_location>
+            <pm_javascript_location>javascript</pm_javascript_location>
+            <pm_print_configfile>common/print.xml</pm_print_configfile>
+            <pm_search_configfile>inline</pm_search_configfile>
+        </config>
+        <map>
+            <mapFile>pmapper_demo.map</mapFile>
+            <tplMapFile>common/template.map</tplMapFile>
+            <categories>
+                
+                <category name="IPB">
+                    <group>Level1</group>
+					<group>Level2</group>
+                    <group>Level3</group>
+                    <group>Level4</group>
+                    <group>Level5</group>
+                    <group>Level6</group>
+
+                </category>
+				
+				<category name="IPB Semua Level">
+					<group>Semua Level</group>
+					<group>Jalan</group>
+				</category>
+				
+            </categories>
+            <allGroups>
+					<group>Level1</group>
+					<group>Level2</group>
+                    <group>Level3</group>
+                    <group>Level4</group>
+                    <group>Level5</group>
+                    <group>Level6</group>
+					<group>Semua Level</group>
+					<group>Jalan</group>
+					
+            </allGroups>
+            <defGroups>
+                
+				<group>Semua Level</group>				
+				<group>Jalan</group>
+            </defGroups>
+			
+            <layerAutoRefresh>1</layerAutoRefresh>
+            <imgFormat>png</imgFormat>
+            <altImgFormat>jpeg</altImgFormat>            
+            <sliderMax>max</sliderMax>
+            <sliderMin>100000</sliderMin>
+        </map>
+        <query>
+            <limitResult>300</limitResult>
+            <highlightColor>255 0 0</highlightColor>
+            <highlightSelected>1</highlightSelected>
+            <autoZoom>nquery</autoZoom>
+            <autoZoom>search</autoZoom>
+            <zoomAll>search</zoomAll>
+            <zoomAll>nquery</zoomAll>
+            <infoWin>dynwin</infoWin>
+            <alignQueryResults>1</alignQueryResults>
+            <pointBuffer>10000</pointBuffer>
+            <shapeQueryBuffer>0.02</shapeQueryBuffer>
+        </query>
+        <ui>
+            <tocStyle>tree</tocStyle>
+            <legendStyle>attached</legendStyle>
+            <useCategories>1</useCategories>
+            <catWithCheckbox>1</catWithCheckbox>
+            <scaleLayers>1</scaleLayers>
+            <icoW>18</icoW>
+            <icoH>14</icoH> 
+        </ui>
+        <locale>
+            <defaultLanguage>en</defaultLanguage>
+            <defaultCharset>UTF-8</defaultCharset>
+            <map2unicode>0</map2unicode>
+        </locale>
+        <print>
+            <printImgFormat>png</printImgFormat>
+            <printAltImgFormat>jpeg</printAltImgFormat>
+            <pdfres>2</pdfres>
+        </print>
+        <download>
+            <dpiLevels>150</dpiLevels>
+            <dpiLevels>200</dpiLevels>
+            <dpiLevels>300</dpiLevels>
+        </download>
+        <php>
+            <pearDbClass>MDB2</pearDbClass>
+            <defaultTimeZone>Europe/Vienna</defaultTimeZone>
+        </php>
+        <pluginsConfig>
+            <export>
+               
+                <formats>CSV</formats>
+                <formats>PDF</formats>
+            </export>
+        </pluginsConfig>
+    </ini>
+
+
+
+		<searchlist version="1.0">
+        <dataroot>$</dataroot> 	
+
+		
+		
+		<searchitem name="Semua Level" description="Semua Level">
+            <layer type="shape" name="Semua Level">
+                <field type="s" name="departemen" description="Semua Level: Departemen"  wildcard="0" />
+				<field type="s" name="nama_ruang" description="Nama Ruang"  wildcard="0" />
+            </layer>
+        </searchitem>
+		
+		<searchitem name="Level1" description="Level1">
+            <layer type="shape" name="Level1">
+                <field type="s" name="departemen" description="Departemen"  wildcard="0" />
+				<field type="s" name="nama_ruang" description="Nama Ruang"  wildcard="0" />
+            </layer>
+        </searchitem>
+		
+		<searchitem name="Level2" description="Level2">
+            <layer type="shape" name="Level2">
+                <field type="s" name="departemen" description="Departemen"  wildcard="0" />
+				<field type="s" name="nama_ruang" description="Nama Ruang"  wildcard="0" />
+            </layer>
+        </searchitem>
+		
+		<searchitem name="Level3" description="Level3">
+            <layer type="shape" name="Level3">
+                <field type="s" name="departemen" description="Departemen"  wildcard="0" />
+				<field type="s" name="nama_ruang" description="Nama Ruang"  wildcard="0" />
+            </layer>
+        </searchitem>
+		
+		<searchitem name="Level4" description="Level4">
+            <layer type="shape" name="Level4">
+                <field type="s" name="departemen" description="Departemen"  wildcard="0" />
+				<field type="s" name="nama_ruang" description="Nama Ruang"  wildcard="0" />
+            </layer>
+        </searchitem>
+		
+		<searchitem name="Level5" description="Level5">
+            <layer type="shape" name="Level5">
+                <field type="s" name="departemen" description="Departemen"  wildcard="0" />
+				<field type="s" name="nama_ruang" description="Nama Ruang"  wildcard="0" />
+            </layer>
+        </searchitem>
+		
+		<searchitem name="Level6" description="Level6">
+            <layer type="shape" name="Level6">
+                <field type="s" name="departemen" description="Departemen"  wildcard="0" />
+				<field type="s" name="nama_ruang" description="Nama Ruang"  wildcard="0" />
+            </layer>
+        </searchitem>
+		
+		
+		
+		<!-- ini bisa dipake
+		<searchitem name="Level1" description="Level1">
+            <layer type="postgis" name="Level1">
+                <field type="s" name="qfield_all" description="Ruang" wildcard="0">
+                    <definition type="suggest" connectiontype="ms" minlength="1" startleft="1" sort="asc">
+                        <mslayer encoding="UTF-8"/>
+                    </definition>
+                </field> 
+            </layer>
+        </searchitem>
+		 
+		
+		<searchitem name="Level2" description="Level2">
+            <layer type="postgis" name="Level2">
+                <field type="s" name="qfield_all" description="Ruang" wildcard="2">
+                    <definition type="suggest" connectiontype="ms" minlength="1" startleft="1" sort="asc">
+                        <mslayer encoding="UTF-8"/>
+                    </definition>
+                </field> 
+            </layer>
+        </searchitem>
+		
+		
+        <searchitem name="Level6" description="Level6">
+            <layer type="postgis" name="Level6">
+                <field type="s" name="qfield_all" wildcard="2" description="Level 6 :">
+					<definition type="suggest" connectiontype="db" sort="asc" minlength="1">
+						<dsn encoding="UTF-8">pgsql://postgres:postgres@localhost/ipbgis_UTM48s</dsn>
+						<sql>
+
+							SELECT departemen FROM semualevel
+
+						</sql>
+					</definition>
+				</field>
+			</layer>
+        </searchitem>
+		-->
+		
+    </searchlist>    
+    
+</pmapper>

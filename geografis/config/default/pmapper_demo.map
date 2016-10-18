@@ -1,0 +1,768 @@
+################################################################################################ 
+# Adapt settings in map file <tt>pmapper_demo.map</tt> for the following tags to match settings
+# on your machine (see additionally MapServer documentation for detailed information):
+#
+#  MAP
+#    SHAPEPATH 
+#    FONTSET
+#    SYMBOLSET
+#  
+#  WEB
+#    IMAGEPATH  
+#    IMAGEURL    
+#
+##################################################################################################
+
+#
+# Start of map file  
+#
+MAP
+
+#EXTENT 105.1000 -7.7500 108.0000 -5.9000
+#EXTENT 511025.2522 9142253.1192 832179.3528 9347911.2192
+
+#EXTENT -51559.43396238 -218020.09878905 96805.04706261 -167466.67971872 # skripsigis
+
+#EXTENT 106.72068 -6.56123 106.73163 -6.55575 # IPB WGS84
+#EXTENT 690056.322 9274410.672 691276.669 9275980.645 # IPB UTM 48s
+
+
+EXTENT 689847.82 9274223.24 691573.95 9275319.29 
+#EXTENT 690040.71 9274550.098 691400.397 9274948.442 # fix tanpa jalan
+
+#EXTENT  1988372 1400000 6411627 5400000
+#EXTENT 31.2657 32.3975 69.0703 81.8574  #WGS84 DARI QGIS
+
+UNITS meters
+#EXTENT -15 30 40 70
+#UNITS dd
+SIZE 600 500
+SHAPEPATH "../../data"
+SYMBOLSET "../../etc/symbols.sym"   
+FONTSET "../../etc/fonts.txt" 
+RESOLUTION 96
+IMAGETYPE png
+INTERLACE OFF
+#CONFIG "PROJ_LIB" "/ms4w/proj/nad/"
+PROJECTION
+  # ETRS-LAEA
+  #"init=epsg:3035"
+  #"+proj=laea +lat_0=52 +lon_0=10 +x_0=4321000 +y_0=3210000 +ellps=GRS80 +units=m +no_defs  no_defs"
+  
+  #"init=epsg:900913"
+  
+  #"init=epsg:4326"
+  #"+proj=longlat +datum=WGS84 +no_defs"
+  
+  #"init=epsg:21148"
+  "+proj=utm +zone=48 +south +ellps=bessel +units=m +no_defs"
+END  
+
+
+
+
+#
+# Start of web interface definition
+#
+WEB
+  TEMPLATE "map.html"
+  IMAGEPATH "/ms4w/tmp/ms_tmp/"
+  IMAGEURL "/ms_tmp/"
+  METADATA
+    #"MAPFILE_ENCODING" "ISO-8859-1"
+	#"ows_title"     "WMS Demo Server"  
+    #"ows_onlineresource" "http://wms.yourserver.org?owskey=test&"   
+    #"ows_srs"       " EPSG:4326"
+  END  # Metadata
+END  # Web
+
+#
+# Start of Reference map definition
+#
+REFERENCE
+  #EXTENT 106.72068 -6.56123 106.73163 -6.55575
+  #EXTENT 690056.322 9274410.672 691276.669 9275080.645 # IPB UTM 48s
+  EXTENT 690042.165 9274494.629 691387.571 9274961.354
+  #EXTENT 1496247 1332616 7055632 5502154
+  IMAGE "../../images/gis.png"
+  SIZE 199 149
+  COLOR -1 -1 -1
+  OUTLINECOLOR 255 0 0
+END  # Reference
+
+LEGEND
+END
+
+
+#
+# Start of ScaleBar definition
+#
+SCALEBAR
+  STATUS OFF
+  TRANSPARENT off
+  INTERVALS 4
+  SIZE 200 3
+  UNITS METERS
+  COLOR 250 250 250
+  OUTLINECOLOR 0 0 0
+  BACKGROUNDCOLOR 100 100 100
+  STYLE 0
+  POSTLABELCACHE true
+  LABEL
+    COLOR 0 0 90
+    #OUTLINECOLOR 200 200 200
+    SIZE small
+  END  # Label
+END  # Reference
+
+
+# SYMBOLS USED IN PMAPPER
+# - 'circle' always necessary (used e.g. for highlight)
+# - 'square' used in currecnt map file
+# Symbols can also be defined via tag SYMBOLSET (see above)
+Symbol
+  Name 'circle'
+  Type ELLIPSE
+  Filled TRUE
+  Points
+    1 1
+  END
+END 
+
+Symbol
+  Name 'square'
+  Type VECTOR
+  Filled TRUE
+  Points
+    0 1
+    0 0
+    1 0
+    1 1
+    0 1
+  END
+END
+
+
+
+
+#================== START OF LAYER SECTION =====================#
+
+
+#----------------- Level 1 ---------------#
+
+LAYER
+	NAME "Level1"
+  	TYPE polygon
+  	CONNECTIONTYPE POSTGIS
+    	CONNECTION "host=localhost dbname=ipbgis_UTM48s user=postgres password=postgres port=5432"
+		PROCESSING "CLOSE_CONNECTION=DEFER"
+	DATA  "geom FROM semualevel USING UNIQUE gid"
+	FILTERITEM 'level'
+	FILTER '1'
+	METADATA 
+    		"DESCRIPTION" "Level 1"
+			"RESULT_FIELDS" "level, nama_ruang, wing, fakultas, departemen"
+    		"RESULT_HEADERS" "Level, Ruang, Wing, Fakultas, Departemen"
+	END  # Metadata
+  	CLASSITEM "fakultas"
+  	CLASS
+    	NAME "Kedokteran Hewan"
+		EXPRESSION "Kedokteran Hewan"
+		STYLE
+			COLOR 200 0 255
+		END
+		TEMPLATE void
+  	END  # Class
+  	CLASS
+    	NAME "Peternakan"
+		EXPRESSION "Peternakan"
+		STYLE
+			COLOR 67 46 40
+		END
+		TEMPLATE void
+  	END  # Class
+   	CLASS
+    	NAME "Perikanan"
+		EXPRESSION "Perikanan"
+		STYLE
+			COLOR 31 43 180
+		END
+		TEMPLATE void
+  	END  # Class
+  	CLASS
+    	NAME "Rektorat"
+		EXPRESSION "Rektorat"
+		STYLE
+			COLOR 98 108 137
+		END
+		TEMPLATE void
+  	END  # Class
+  	CLASS
+    	NAME "Teknologi Pertanian"
+		EXPRESSION "Teknologi Pertanian"
+		STYLE
+			COLOR 255 23 7
+		END
+		TEMPLATE void
+  	END  # Class
+  	CLASS
+    	NAME "Ekonomi dan Manajemen"
+		EXPRESSION "Ekonomi dan Manajemen"
+		STYLE
+			COLOR 246 93 4
+		END
+		TEMPLATE void
+  	END  # Class
+  	CLASS
+    	NAME "Perpustakaan"
+		EXPRESSION "Perpustakaan"
+		STYLE
+			COLOR 61 67 84
+		END
+		TEMPLATE void
+  	END  # Class
+END  # Layer
+
+
+#----------------- Level 2 ---------------#
+
+LAYER
+	NAME "Level2"
+  	TYPE polygon
+  	CONNECTIONTYPE POSTGIS
+    	CONNECTION "host=localhost dbname=ipbgis_UTM48s user=postgres password=postgres port=5432"
+		PROCESSING "CLOSE_CONNECTION=DEFER"
+	DATA  "geom FROM semualevel USING UNIQUE gid"
+	FILTERITEM 'level'
+	FILTER '2'
+	METADATA 
+    		"DESCRIPTION" "Level 2"
+			"RESULT_FIELDS" "level, nama_ruang, wing, fakultas, departemen"
+    		"RESULT_HEADERS" "Level, Ruang, Wing, Fakultas, Departemen"
+	END  # Metadata
+  	CLASSITEM "fakultas"
+  	CLASS
+    	NAME "Kedokteran Hewan"
+		EXPRESSION "Kedokteran Hewan"
+		STYLE
+			COLOR 200 0 255
+		END
+		TEMPLATE void
+  	END  # Class
+  	CLASS
+    	NAME "Peternakan"
+		EXPRESSION "Peternakan"
+		STYLE
+			COLOR 67 46 40
+		END
+		TEMPLATE void
+  	END  # Class
+   	CLASS
+    	NAME "Perikanan"
+		EXPRESSION "Perikanan"
+		STYLE
+			COLOR 31 43 180
+		END
+		TEMPLATE void
+  	END  # Class
+  	CLASS
+    	NAME "Rektorat"
+		EXPRESSION "Rektorat"
+		STYLE
+			COLOR 98 108 137
+		END
+		TEMPLATE void
+  	END  # Class
+  	CLASS
+    	NAME "Teknologi Pertanian"
+		EXPRESSION "Teknologi Pertanian"
+		STYLE
+			COLOR 255 23 7
+		END
+		TEMPLATE void
+  	END  # Class
+  	CLASS
+    	NAME "Ekonomi dan Manajemen"
+		EXPRESSION "Ekonomi dan Manajemen"
+		STYLE
+			COLOR 246 93 4
+		END
+		TEMPLATE void
+  	END  # Class
+  	CLASS
+    	NAME "Perpustakaan"
+		EXPRESSION "Perpustakaan"
+		STYLE
+			COLOR 61 67 84
+		END
+		TEMPLATE void
+  	END  # Class
+END  # Layer
+
+#----------------- Level 3 ---------------#
+
+LAYER
+	NAME "Level3"
+  	TYPE polygon
+  	CONNECTIONTYPE POSTGIS
+    	CONNECTION "host=localhost dbname=ipbgis_UTM48s user=postgres password=postgres port=5432"
+		PROCESSING "CLOSE_CONNECTION=DEFER"
+	DATA  "geom FROM semualevel USING UNIQUE gid"
+	FILTERITEM 'level'
+	FILTER '3'
+	METADATA 
+    		"DESCRIPTION" "Level 3"
+			"RESULT_FIELDS" "level, nama_ruang, wing, fakultas, departemen"
+    		"RESULT_HEADERS" "Level, Ruang, Wing, Fakultas, Departemen"
+	END  # Metadata
+  	CLASSITEM "fakultas"
+  	CLASS
+    	NAME "Kedokteran Hewan"
+		EXPRESSION "Kedokteran Hewan"
+		STYLE
+			COLOR 200 0 255
+		END
+		TEMPLATE void
+  	END  # Class
+  	CLASS
+    	NAME "Peternakan"
+		EXPRESSION "Peternakan"
+		STYLE
+			COLOR 67 46 40
+		END
+		TEMPLATE void
+  	END  # Class
+   	CLASS
+    	NAME "Perikanan"
+		EXPRESSION "Perikanan"
+		STYLE
+			COLOR 31 43 180
+		END
+		TEMPLATE void
+  	END  # Class
+  	CLASS
+    	NAME "Rektorat"
+		EXPRESSION "Rektorat"
+		STYLE
+			COLOR 98 108 137
+		END
+		TEMPLATE void
+  	END  # Class
+  	CLASS
+    	NAME "Teknologi Pertanian"
+		EXPRESSION "Teknologi Pertanian"
+		STYLE
+			COLOR 255 23 7
+		END
+		TEMPLATE void
+  	END  # Class
+  	CLASS
+    	NAME "Ekonomi dan Manajemen"
+		EXPRESSION "Ekonomi dan Manajemen"
+		STYLE
+			COLOR 246 93 4
+		END
+		TEMPLATE void
+  	END  # Class
+  	CLASS
+    	NAME "Perpustakaan"
+		EXPRESSION "Perpustakaan"
+		STYLE
+			COLOR 61 67 84
+		END
+		TEMPLATE void
+  	END  # Class
+	CLASS
+		NAME "Pertanian"
+		EXPRESSION "Pertanian"
+		STYLE
+			COLOR 27 92 23
+		END
+		TEMPLATE void
+	END  # Class
+  
+	 CLASS
+		NAME "Ekologi Manusia"
+		EXPRESSION "Ekologi Manusia"
+		STYLE
+			COLOR 37 237 177
+		END
+		TEMPLATE void
+	 END  # Class
+	  
+	 CLASS
+		NAME "Graha Widya Wisuda"
+		EXPRESSION "Graha Widya Wisuda"
+		STYLE
+			COLOR 102 153 255
+		END
+		TEMPLATE void
+	 END  # Class
+	
+END  # Layer
+
+
+#----------------- Level 4 ---------------#
+
+LAYER
+	NAME "Level4"
+  	TYPE polygon
+  	CONNECTIONTYPE POSTGIS
+    	CONNECTION "host=localhost dbname=ipbgis_UTM48s user=postgres password=postgres port=5432"
+		PROCESSING "CLOSE_CONNECTION=DEFER"
+	DATA  "geom FROM semualevel USING UNIQUE gid"
+	FILTERITEM 'level'
+	FILTER '4'
+	METADATA 
+    		"DESCRIPTION" "Level 4"
+			"RESULT_FIELDS" "level, nama_ruang, wing, fakultas, departemen"
+    		"RESULT_HEADERS" "Level, Ruang, Wing, Fakultas, Departemen"
+	END  # Metadata
+  	CLASSITEM "fakultas"
+  	CLASS
+    	NAME "Kedokteran Hewan"
+		EXPRESSION "Kedokteran Hewan"
+		STYLE
+			COLOR 200 0 255
+		END
+		TEMPLATE void
+  	END  # Class
+  	CLASS
+    	NAME "Peternakan"
+		EXPRESSION "Peternakan"
+		STYLE
+			COLOR 67 46 40
+		END
+		TEMPLATE void
+  	END  # Class
+   	CLASS
+    	NAME "Perikanan"
+		EXPRESSION "Perikanan"
+		STYLE
+			COLOR 31 43 180
+		END
+		TEMPLATE void
+  	END  # Class
+  	CLASS
+    	NAME "Rektorat"
+		EXPRESSION "Rektorat"
+		STYLE
+			COLOR 98 108 137
+		END
+		TEMPLATE void
+  	END  # Class
+  	CLASS
+    	NAME "Teknologi Pertanian"
+		EXPRESSION "Teknologi Pertanian"
+		STYLE
+			COLOR 255 23 7
+		END
+		TEMPLATE void
+  	END  # Class
+  	CLASS
+    	NAME "Ekonomi dan Manajemen"
+		EXPRESSION "Ekonomi dan Manajemen"
+		STYLE
+			COLOR 246 93 4
+		END
+		TEMPLATE void
+  	END  # Class
+  	CLASS
+    	NAME "Perpustakaan"
+		EXPRESSION "Perpustakaan"
+		STYLE
+			COLOR 61 67 84
+		END
+		TEMPLATE void
+  	END  # Class
+	CLASS
+		NAME "Pertanian"
+		EXPRESSION "Pertanian"
+		STYLE
+			COLOR 27 92 23
+		END
+		TEMPLATE void
+	END  # Class
+  
+	CLASS
+		NAME "Ekologi Manusia"
+		EXPRESSION "Ekologi Manusia"
+		STYLE
+			COLOR 37 237 177
+		END
+		TEMPLATE void
+	END  # Class
+	  
+	CLASS
+		NAME "Matematika dan Ilmu Pengetahuan Alam"
+		EXPRESSION "Matematika dan Ilmu Pengetahuan Alam"
+		STYLE
+			COLOR 245 249 216 
+		END
+		TEMPLATE void
+	END  # Class
+	
+END  # Layer
+
+
+#----------------- Level 5 ---------------#
+
+LAYER
+	NAME "Level5"
+  	TYPE polygon
+  	CONNECTIONTYPE POSTGIS
+    	CONNECTION "host=localhost dbname=ipbgis_UTM48s user=postgres password=postgres port=5432"
+		PROCESSING "CLOSE_CONNECTION=DEFER"
+	DATA  "geom FROM semualevel USING UNIQUE gid"
+	FILTERITEM 'level'
+	FILTER '5'
+	METADATA 
+    		"DESCRIPTION" "Level 5"
+			"RESULT_FIELDS" "level, nama_ruang, wing, fakultas, departemen"
+    		"RESULT_HEADERS" "Level, Ruang, Wing, Fakultas, Departemen"
+	END  # Metadata
+  	CLASSITEM "fakultas"
+  	CLASS
+    	NAME "Kedokteran Hewan"
+		EXPRESSION "Kedokteran Hewan"
+		STYLE
+			COLOR 200 0 255
+		END
+		TEMPLATE void
+  	END  # Class
+  	CLASS
+    	NAME "Peternakan"
+		EXPRESSION "Peternakan"
+		STYLE
+			COLOR 67 46 40
+		END
+		TEMPLATE void
+  	END  # Class
+   	CLASS
+    	NAME "Perikanan"
+		EXPRESSION "Perikanan"
+		STYLE
+			COLOR 31 43 180
+		END
+		TEMPLATE void
+  	END  # Class
+  	CLASS
+    	NAME "Rektorat"
+		EXPRESSION "Rektorat"
+		STYLE
+			COLOR 98 108 137
+		END
+		TEMPLATE void
+  	END  # Class
+  	CLASS
+    	NAME "Teknologi Pertanian"
+		EXPRESSION "Teknologi Pertanian"
+		STYLE
+			COLOR 255 23 7
+		END
+		TEMPLATE void
+  	END  # Class
+  	CLASS
+    	NAME "Ekonomi dan Manajemen"
+		EXPRESSION "Ekonomi dan Manajemen"
+		STYLE
+			COLOR 246 93 4
+		END
+		TEMPLATE void
+  	END  # Class
+  	CLASS
+    	NAME "Perpustakaan"
+		EXPRESSION "Perpustakaan"
+		STYLE
+			COLOR 61 67 84
+		END
+		TEMPLATE void
+  	END  # Class
+	CLASS
+		NAME "Pertanian"
+		EXPRESSION "Pertanian"
+		STYLE
+			COLOR 27 92 23
+		END
+		TEMPLATE void
+	END  # Class
+  
+	CLASS
+		NAME "Ekologi Manusia"
+		EXPRESSION "Ekologi Manusia"
+		STYLE
+			COLOR 37 237 177
+		END
+		TEMPLATE void
+	END  # Class
+	  
+	CLASS
+		NAME "Matematika dan Ilmu Pengetahuan Alam"
+		EXPRESSION "Matematika dan Ilmu Pengetahuan Alam"
+		STYLE
+			COLOR 245 249 216 
+		END
+		TEMPLATE void
+	END  # Class
+	
+END  # Layer
+
+
+#----------------- Level 6 ---------------#
+
+LAYER
+	NAME "Level6"
+  	TYPE polygon
+  	CONNECTIONTYPE POSTGIS
+    	CONNECTION "host=localhost dbname=ipbgis_UTM48s user=postgres password=postgres port=5432"
+		PROCESSING "CLOSE_CONNECTION=DEFER"
+	DATA  "geom FROM semualevel USING UNIQUE gid"
+	FILTERITEM 'level'
+	FILTER '6'
+	METADATA 
+    		"DESCRIPTION" "Level 6"
+		"RESULT_FIELDS" "level, nama_ruang, wing, fakultas, departemen"
+    		"RESULT_HEADERS" "Level, Ruang, Wing, Fakultas, Departemen"
+	END  # Metadata
+  	CLASSITEM "fakultas"
+  	CLASS
+    	NAME "Kedokteran Hewan"
+		EXPRESSION "Kedokteran Hewan"
+		STYLE
+			COLOR 200 0 255
+		END
+		TEMPLATE void
+  	END  # Class
+  	CLASS
+    	NAME "Peternakan"
+		EXPRESSION "Peternakan"
+		STYLE
+			COLOR 67 46 40
+		END
+		TEMPLATE void
+  	END  # Class
+   	CLASS
+    	NAME "Perikanan"
+		EXPRESSION "Perikanan"
+		STYLE
+			COLOR 31 43 180
+		END
+		TEMPLATE void
+  	END  # Class
+  	CLASS
+    	NAME "Rektorat"
+		EXPRESSION "Rektorat"
+		STYLE
+			COLOR 98 108 137
+		END
+		TEMPLATE void
+  	END  # Class
+  	CLASS
+    	NAME "Teknologi Pertanian"
+		EXPRESSION "Teknologi Pertanian"
+		STYLE
+			COLOR 255 23 7
+		END
+		TEMPLATE void
+  	END  # Class
+  	CLASS
+    	NAME "Ekonomi dan Manajemen"
+		EXPRESSION "Ekonomi dan Manajemen"
+		STYLE
+			COLOR 246 93 4
+		END
+		TEMPLATE void
+  	END  # Class
+  	CLASS
+    	NAME "Perpustakaan"
+		EXPRESSION "Perpustakaan"
+		STYLE
+			COLOR 61 67 84
+		END
+		TEMPLATE void
+  	END  # Class
+	CLASS
+		NAME "Pertanian"
+		EXPRESSION "Pertanian"
+		STYLE
+			COLOR 27 92 23
+		END
+		TEMPLATE void
+	END  # Class
+  
+	CLASS
+		NAME "Ekologi Manusia"
+		EXPRESSION "Ekologi Manusia"
+		STYLE
+			COLOR 37 237 177
+		END
+		TEMPLATE void
+	END  # Class
+	  
+	CLASS
+		NAME "Matematika dan Ilmu Pengetahuan Alam"
+		EXPRESSION "Matematika dan Ilmu Pengetahuan Alam"
+		STYLE
+			COLOR 245 249 216 
+		END
+		TEMPLATE void
+	END  # Class
+	
+END  # Layer
+
+#----------------- All Level  ---------------#
+
+LAYER
+	NAME "Semua Level"
+  	TYPE polygon
+	DATA "SemuaLevel_UTM48s"
+	#CONNECTIONTYPE POSTGIS
+    #	CONNECTION "host=localhost dbname=ipbgis_UTM48s user=postgres password=postgres port=5432"
+	#	PROCESSING "CLOSE_CONNECTION=DEFER"
+	#DATA  "geom FROM (select * from semualevel) AS thegeom USING UNIQUE gid"
+	TRANSPARENCY 20	
+	METADATA 
+    	"DESCRIPTION" "Semua Level"
+		"RESULT_FIELDS" "LEVEL, NAMA_RUANG, WING, FAKULTAS, DEPARTEMEN"
+		#"RESULT_FIELDS" "level, nama_ruang, wing, fakultas, departemen"
+		"RESULT_HEADERS" "Level, Ruang, Wing, Fakultas, Departemen"
+	END  #Metadata
+	
+  	CLASS
+    COLOR 0 0 0
+    OUTLINECOLOR 50 0 0
+    TEMPLATE void
+  	END  # Class
+END  # Layer
+
+#----------------- Jalan  ---------------#
+
+LAYER
+	NAME "Jalan"
+  	TYPE LINE
+  	#DATA "planet_osm_line_1.shp"
+	CONNECTIONTYPE POSTGIS
+    	CONNECTION "host=localhost dbname=ipbgis_UTM48s user=postgres password=postgres port=5432"
+		PROCESSING "CLOSE_CONNECTION=DEFER"
+	DATA  "geom FROM (select * from jalan) AS thegeom USING UNIQUE gid"
+	SIZEUNITS PIXELS
+  	TOLERANCE 0
+  	TOLERANCEUNITS PIXELS
+	TRANSPARENCY 50
+	
+	METADATA 
+    	"DESCRIPTION" "Jalan"
+		"RESULT_FIELDS" "name"
+		"RESULT_HEADERS" "Nama Jalan"
+	END  #Metadata
+
+  	CLASS
+	    COLOR 0 0 0
+	    OUTLINECOLOR 255 0 0
+		TEMPLATE void
+  	END  # Class
+END  # Laye
+
+
+
+END  #Map
